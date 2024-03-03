@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
+import Notification from './components/Notification'
 import login from './services/login'
 
 const App = () => {
@@ -9,6 +10,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [errorType, setErrorType] = useState("error")
 
   useEffect(() => {
     blogService.getAll()
@@ -36,7 +39,11 @@ const App = () => {
       window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
       blogService.setToken(user.token)
     } catch (exception) {
-
+      setMessage(`wrong username and password`)
+      setErrorType('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
   }
   
@@ -57,6 +64,12 @@ const App = () => {
     
     const blogs = await blogService.getAll()
     setBlogs(blogs)
+
+    setMessage(`Created new blog: ${blogObject.title}, by ${user}`)
+    setErrorType('success')
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   const loggedIn = () => (
@@ -78,6 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
+      <Notification message={message} error={errorType}/>
       {
       user === null 
         ? <LoginForm 
