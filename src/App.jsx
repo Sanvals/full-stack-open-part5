@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import login from './services/login'
 
@@ -14,6 +15,15 @@ const App = () => {
     .then(blog => setBlogs(blog))
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user.username)
+      blogService.setToken(user.token)
+    }
+  })
+
   const handleLogin = async (event) => {
     event.preventDefault()
     
@@ -22,40 +32,22 @@ const App = () => {
       setUser(user.username)
       setUsername('')
       setPassword('')
+
+      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
+      blogService.setToken(user.token)
     } catch (exception) {
 
     }
   }
-
-  const loginForm  = () =>  (
-      <form onSubmit={handleLogin}>
-        <div>
-          username: 
-          <input 
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password: 
-          <input 
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">
-          login
-        </button>
-      </form>
-  )
+  
+  const logOut = () => {
+    window.localStorage.removeItem('loggedBlogUser')
+    setUser(null)
+  }
 
   const loggedIn = () => (
       <>
-      Welcome, <strong>{user}</strong>!
+      Welcome, <strong>{user}</strong>! <button onClick={logOut}>Logout</button>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
@@ -67,7 +59,13 @@ const App = () => {
       <h2>Blogs</h2>
       {
       user === null 
-        ? loginForm()
+        ? <LoginForm 
+            handleLogin={handleLogin}
+            username={username}
+            password={password}
+            setUsername={setUsername}
+            setPassword={setPassword}
+            />
         : loggedIn()
       }
     </div>
