@@ -45,9 +45,30 @@ const App = () => {
     setUser(null)
   }
 
+  const createBlog = async (event) => {
+    event.preventDefault()
+
+    const blogObject = {
+      title: event.target[0].value,
+      url: event.target[1].value,
+    }
+
+    await blogService.create(blogObject)
+    
+    const blogs = await blogService.getAll()
+    setBlogs(blogs)
+  }
+
   const loggedIn = () => (
       <>
       Welcome, <strong>{user}</strong>! <button onClick={logOut}>Logout</button>
+      <h2>Create</h2>
+      <form onSubmit={createBlog}>
+        <div>title: <input type="text" /></div>
+        <div>url: <input type="text" /></div>
+        <button type="submit">create</button>
+      </form>
+      <h2>Blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
