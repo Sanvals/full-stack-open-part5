@@ -1,19 +1,26 @@
-const CreateBlog = ({ createBlog, title, setTitle, link, setLink }) => {
+import { useState } from 'react'
 
+const CreateBlog = ({ createBlog }) => {
+    const [title, setTitle] = useState('New Title')
+    const [link, setLink] = useState('')
+
+    const newBlog = (event) => {
+        event.preventDefault()
+        createBlog({
+            title: title,
+            url: link
+        })
+    }
     return (
         <>
-        <form onSubmit={createBlog}>
+        <form onSubmit={newBlog}>
             <div>
                 title:         
                 <input 
                     type="text"
                     value={title}
                     name="Title"
-                    onChange={({ target }) => 
-                    {
-                        setTitle(target.value)
-                        console.log(target.value)
-                    }}
+                    onChange={({ target }) => setTitle(target.value)}
                 />
             </div>            
             <div>

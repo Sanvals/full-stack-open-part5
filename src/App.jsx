@@ -11,12 +11,9 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('New Title')
-  const [link, setLink] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [errorType, setErrorType] = useState("error")
-  const [noteVisible, setNoteVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll()
@@ -58,14 +55,7 @@ const App = () => {
   }
 
   const createBlog = async (event) => {
-    event.preventDefault()
-
-    const blogObject = {
-      title: title,
-      url: link,
-    }
-
-    await blogService.create(blogObject)
+    await blogService.create(event)
     
     const blogs = await blogService.getAll()
     setBlogs(blogs)
@@ -82,13 +72,7 @@ const App = () => {
       Welcome, <strong>{user}</strong>! <button onClick={logOut}>Logout</button>
       <Togglable buttonLabel="create new">
       <h2>Create</h2>
-        <CreateBlog 
-          createBlog={createBlog}
-          title={title}
-          setTitle={setTitle}
-          link={link}
-          setLink={setLink}
-          />
+        <CreateBlog createBlog={createBlog}/>
       </Togglable>
       <h2>Blogs</h2>
       {blogs.map(blog =>
