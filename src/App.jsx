@@ -69,6 +69,11 @@ const App = () => {
     }, 5000)
   }
 
+  const addLikeBlog = async (event) => {
+    event.preventDefault()
+    console.log(event)
+  }
+
   const loggedIn = () => (
       <>
       Welcome, <strong>{user}</strong>! <button onClick={logOut}>Logout</button>
