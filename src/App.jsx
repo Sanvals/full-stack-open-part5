@@ -69,11 +69,6 @@ const App = () => {
     }, 5000)
   }
 
-  const addLikeBlog = async (event) => {
-    event.preventDefault()
-    console.log(event)
-  }
-
   const loggedIn = () => (
       <>
       Welcome, <strong>{user}</strong>! <button onClick={logOut}>Logout</button>
@@ -83,7 +78,7 @@ const App = () => {
       </Togglable>
       <h2>Blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} user={user} />
       )}
       </>
   )

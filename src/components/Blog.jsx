@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, user }) => {
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(0);
+  const [likedBy, setLikedBy] = useState([])
 
   const hideWhenVisible = { display: visible ? '' : 'none' }
 
@@ -13,12 +14,13 @@ const Blog = ({ blog }) => {
 
   useEffect(() => {
     setLikes(blog.likes)
-    console.log(likes)
+    setLikedBy(blog.likedBy)
   }, [])
 
   const likeCounter = async () => {
     blogService.addLike(blog)
     setLikes(likes + 1)
+    setLikedBy(likedBy.concat(user) ? likedBy.concat(user) : likedBy)
   }
 
   return (
@@ -27,8 +29,10 @@ const Blog = ({ blog }) => {
     <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
     <div style={hideWhenVisible}>
       <div>{blog.url}</div>
-      <div>{likes} likes <button onClick={likeCounter}>like</button></div>
+      <div>{likes} likes <button onClick={likeCounter}>❤️</button></div>
+      <div>{likedBy}</div>
     </div>
   </div>  
 )}
+
 export default Blog
