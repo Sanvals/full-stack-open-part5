@@ -15,6 +15,7 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [errorType, setErrorType] = useState("error")
   const noteFormRef = useRef()
+  const sortBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     blogService.getAll()
@@ -62,7 +63,7 @@ const App = () => {
     setBlogs(blogs)
 
     noteFormRef.current.toggleVisibility()
-    setMessage(`Created new blog: ${blogObject.title}, by ${user}`)
+    setMessage(`Created new blog: ${event.title}, by ${user}`)
     setErrorType('success')
     setTimeout(() => {
       setMessage(null)
@@ -77,9 +78,9 @@ const App = () => {
           <CreateBlog createBlog={createBlog}/>
       </Togglable>
       <h2>Blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} />
-      )}
+      {
+        sortBlogs.map(blog => <Blog key={blog.id} blog={blog} user={user} />)
+      }
       </>
   )
 
