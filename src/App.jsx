@@ -13,13 +13,13 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
-  const [errorType, setErrorType] = useState("error")
+  const [errorType, setErrorType] = useState('error')
   const noteFormRef = useRef()
   const sortBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     blogService.getAll()
-    .then(blog => setBlogs(blog))
+      .then(blog => setBlogs(blog))
   }, [])
 
   useEffect(() => {
@@ -29,11 +29,11 @@ const App = () => {
       setUser(user.username)
       blogService.setToken(user.token)
     }
-  })
+  }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await login.login({ username, password })
       setUser(user.username)
@@ -43,14 +43,14 @@ const App = () => {
       window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
       blogService.setToken(user.token)
     } catch (exception) {
-      setMessage(`wrong username and password`)
+      setMessage('wrong username and password')
       setErrorType('error')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
     }
   }
-  
+
   const logOut = () => {
     window.localStorage.removeItem('loggedBlogUser')
     setUser(null)
@@ -58,7 +58,7 @@ const App = () => {
 
   const createBlog = async (event) => {
     await blogService.create(event)
-    
+
     const blogs = await blogService.getAll()
     setBlogs(blogs)
 
@@ -71,27 +71,27 @@ const App = () => {
   }
 
   const deleteBlogApp = async (id) => {
-    await blogService.remove(id);
+    await blogService.remove(id)
     setBlogs(blogs.filter(blog => blog.id !== id))
   }
 
   const loggedIn = () => (
-      <>
+    <>
       Welcome, <strong>{user}</strong>! <button onClick={logOut}>Logout</button>
       <Togglable buttonLabel="create new" ref={noteFormRef}>
         <h2>Create</h2>
-          <CreateBlog createBlog={createBlog}/>
+        <CreateBlog createBlog={createBlog}/>
       </Togglable>
       <h2>Blogs</h2>
       {
-        sortBlogs.map(blog => 
-        <Blog 
-          key={blog.id} 
-          blog={blog} 
-          user={user} 
-          deleteBlogApp={deleteBlogApp} />)
+        sortBlogs.map(blog =>
+          <Blog
+            key={blog.id}
+            blog={blog}
+            user={user}
+            deleteBlogApp={deleteBlogApp} />)
       }
-      </>
+    </>
   )
 
   return (
@@ -99,15 +99,15 @@ const App = () => {
       <h2>Blogs</h2>
       <Notification message={message} error={errorType}/>
       {
-      user === null 
-        ? <LoginForm 
+        user === null
+          ? <LoginForm
             handleLogin={handleLogin}
             username={username}
             password={password}
             setUsername={setUsername}
             setPassword={setPassword}
-            />
-        : loggedIn()
+          />
+          : loggedIn()
       }
     </div>
   )
