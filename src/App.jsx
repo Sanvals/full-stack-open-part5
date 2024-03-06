@@ -70,6 +70,11 @@ const App = () => {
     }, 5000)
   }
 
+  const deleteBlogApp = async (id) => {
+    await blogService.remove(id);
+    setBlogs(blogs.filter(blog => blog.id !== id))
+  }
+
   const loggedIn = () => (
       <>
       Welcome, <strong>{user}</strong>! <button onClick={logOut}>Logout</button>
@@ -79,7 +84,12 @@ const App = () => {
       </Togglable>
       <h2>Blogs</h2>
       {
-        sortBlogs.map(blog => <Blog key={blog.id} blog={blog} user={user} />)
+        sortBlogs.map(blog => 
+        <Blog 
+          key={blog.id} 
+          blog={blog} 
+          user={user} 
+          deleteBlogApp={deleteBlogApp} />)
       }
       </>
   )

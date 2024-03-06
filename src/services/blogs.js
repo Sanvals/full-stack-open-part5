@@ -26,9 +26,17 @@ const addLike = async blog => {
   }
 
   const currentLikes = blog.likes
-  console.log(currentLikes)
 
   const request = axios.put(`${baseUrl}/${blog.id}`, blog, config)
+  return request.data
+}
+
+const remove = async id => {
+  const config = {
+    headers: {Authorization: token}
+  }
+
+  const request = axios.delete(`${baseUrl}/${id}`, config)
   return request.data
 }
 
@@ -36,5 +44,6 @@ export default {
   getAll, 
   setToken, 
   create, 
-  addLike 
+  addLike,
+  remove
 }
