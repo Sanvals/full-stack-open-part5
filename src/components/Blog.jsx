@@ -30,16 +30,18 @@ const Blog = ({ blog, user, deleteBlogApp }) => {
   }
 
   return (
-    <div>
-      <i>{blog.title}</i>, by <strong>{blog.author.username}</strong>
-      <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
-      <div style={hideWhenVisible}>
-        <div>{blog.url}</div>
-        <div>{likes} likes <button onClick={likeCounter}>❤️</button></div>
-        <div>Liked by: {likedBy}</div>
-        <div>{blog.author.username === user && <button onClick={deleteBlog}>🗑️</button>}</div>
+    <>
+      <div>
+        {blog.title}, by <strong>{blog.author.username}</strong>
+        <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
+        <div style={hideWhenVisible}>
+          <div>{blog.url}</div>
+          <div>{likes} likes <button onClick={likeCounter}>❤️</button></div>
+          <div>Liked by: {likedBy}</div>
+          <div>{blog.author.username === user && <button onClick={deleteBlog}>🗑️</button>}</div>
+        </div>
       </div>
-    </div>
+    </>
   )}
 
 export default Blog
