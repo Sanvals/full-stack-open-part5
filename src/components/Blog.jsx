@@ -23,12 +23,6 @@ const Blog = ({ blog, user, deleteBlogApp }) => {
     setLikedBy(likedBy.concat(user) ? likedBy.concat(user) : likedBy)
   }
 
-  const deleteBlog = () => {
-    if(window.confirm(`You are about to delete the blog ${blog.title}. Are you sure?`)) {
-      deleteBlogApp(blog.id)
-    }
-  }
-
   return (
     <>
       <div>
@@ -38,7 +32,7 @@ const Blog = ({ blog, user, deleteBlogApp }) => {
           <div>{blog.url}</div>
           <div>{likes} likes <button onClick={likeCounter}>❤️</button></div>
           <div>Liked by: {likedBy}</div>
-          <div>{blog.author.username === user && <button onClick={deleteBlog}>🗑️</button>}</div>
+          <div>{blog.author.username === user && <button onClick={() => deleteBlogApp(blog)}>🗑️</button>}</div>
         </div>
       </div>
     </>

@@ -70,9 +70,11 @@ const App = () => {
     }, 5000)
   }
 
-  const deleteBlogApp = async (id) => {
-    await blogService.remove(id)
-    setBlogs(blogs.filter(blog => blog.id !== id))
+  const deleteBlogApp = async (catchBlog) => {
+    if(window.confirm(`You are about to delete the blog ${catchBlog.title}. Are you sure?`)) {
+      await blogService.remove(catchBlog.id)
+      setBlogs(blogs.filter(blog => blog.id !== catchBlog.id))
+    }
   }
 
   const loggedIn = () => (

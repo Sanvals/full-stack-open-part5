@@ -2,21 +2,21 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
+const blog =
+{
+  title: 'Component testing',
+  url: '',
+  likes: 21,
+  author: {
+    username: 'Josefa',
+    name: 'Josefina',
+    id: '65e1c334831732d222a6151c'
+  },
+  likedBy: ['Josefa'],
+  id: '65e4aecc9cd77c43b4fd1053'
+}
 
 test('renders content', () => {
-  const blog =
-    {
-      title: 'Component testing',
-      url: '',
-      likes: 21,
-      author: {
-        username: 'Josefa',
-        name: 'Josefina',
-        id: '65e1c334831732d222a6151c'
-      },
-      likedBy: ['Josefa'],
-      id: '65e4aecc9cd77c43b4fd1053'
-    }
 
   render(
     <Blog
@@ -36,20 +36,6 @@ test('renders content', () => {
 })
 
 test('shows number of likes', () => {
-  const blog =
-    {
-      title: 'Component testing',
-      url: '',
-      likes: 21,
-      author: {
-        username: 'Josefa',
-        name: 'Josefina',
-        id: '65e1c334831732d222a6151c'
-      },
-      likedBy: ['Josefa'],
-      id: '65e4aecc9cd77c43b4fd1053'
-    }
-
   render(
     <Blog
       blog={blog}
@@ -65,4 +51,22 @@ test('shows number of likes', () => {
   const likes = screen.getByText(/21/)
   // screen.debug()
   expect(likes).toBeDefined()
+})
+
+
+test('clicking the button twice calls event handler twice',  () => {
+  const mockHandler = vi.fn()
+
+  render(
+    <Blog
+      blog={blog}
+      user='Josefa'
+      deleteBlogApp={mockHandler()}
+    />
+  )
+  const user = userEvent.setup()
+  const button = screen.getByText('🗑️')
+  user.click(button)
+  console.log(mockHandler.mock.calls)
+  expect(mockHandler.mock.calls).toHaveLength(1)
 })
