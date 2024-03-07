@@ -70,3 +70,15 @@ test('clicking the button twice calls event handler twice',  () => {
   console.log(mockHandler.mock.calls)
   expect(mockHandler.mock.calls).toHaveLength(1)
 })
+
+test('new blog form not displayed by default', () => {
+  render(
+    <Blog
+      blog={blog}
+      user='Josefa'
+      deleteBlogApp={vi.fn()}
+    />
+  )
+  const form = screen.queryByLabelText('create new')
+  expect(form).not.toBeInTheDocument()
+})
