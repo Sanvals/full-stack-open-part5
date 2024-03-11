@@ -47,7 +47,7 @@ const App = () => {
       setErrorType('error')
       setTimeout(() => {
         setMessage(null)
-      }, 5000)
+      }, 2000)
     }
   }
 
@@ -67,13 +67,18 @@ const App = () => {
     setErrorType('success')
     setTimeout(() => {
       setMessage(null)
-    }, 5000)
+    }, 2000)
   }
 
   const deleteBlogApp = async (catchBlog) => {
     if(window.confirm(`You are about to delete the blog ${catchBlog.title}. Are you sure?`)) {
       await blogService.remove(catchBlog.id)
       setBlogs(blogs.filter(blog => blog.id !== catchBlog.id))
+      setMessage('Blog deleted')
+      setErrorType('success')
+      setTimeout(() => {
+        setMessage(null)
+      }, 2000)
     }
   }
 
